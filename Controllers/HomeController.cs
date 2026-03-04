@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Net.Mime;
 
 namespace Learn_Controller.Controllers
 {
@@ -20,6 +21,24 @@ namespace Learn_Controller.Controllers
         public string Index()
         {
             return "Hello Sunny";
+        }
+        [Route("text-content")]
+        public ContentResult TextContent()
+        {
+            return new ContentResult()
+            {
+                Content = "Hello Sunny, I'm From TextContent",
+                ContentType = "text/plain"
+            };
+        }
+        [Route("html-content")]
+        public ContentResult HtmlContent()
+        {
+            return new ContentResult()
+            {
+                Content = "<h1>Hello Sunny, I'm from <span style=color:red>HTML</span> Content</h1>",
+                ContentType = MediaTypeNames.Text.Html
+            };
         }
     }
 }
