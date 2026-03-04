@@ -164,5 +164,28 @@ namespace Learn_Controller.Controllers
 
 
         }
+
+        [HttpGet]
+        [Route("download-action-pdf-file")]
+        public ActionResult ActionDownloadPdf()
+        {
+            return File("My Resume Final.pdf", MediaTypeNames.Application.Pdf, "Resume.pdf");
+        }
+
+        static int i = 0;
+        [HttpGet]
+        [Route("download-iaction-json-data")]
+        public IActionResult IActionJsonData()
+        {
+            AboutMe aboutMe = new AboutMe()
+            {
+                Id = Guid.NewGuid(),
+                Name = "Sunny",
+                Email = $"{++i} Sunny@gmail.com"
+
+            };
+            return Json(aboutMe);
+        }
+
     }
 }
