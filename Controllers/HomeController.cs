@@ -40,5 +40,24 @@ namespace Learn_Controller.Controllers
                 ContentType = MediaTypeNames.Text.Html
             };
         }
+
+        [Route("json-content")]
+        public JsonResult JsonContent()
+        {
+            var data = new
+            {
+                Name = "Sunny",
+                Age = 30,
+                City = "New York",
+                Address = new
+                {
+                    Street = "123 Main St",
+                    ZipCode = "10001"
+                },
+                Hobbies = new[] { "Reading", "Traveling", "Coding" }
+            };
+            return new JsonResult(data);
+        }
+
     }
 }
