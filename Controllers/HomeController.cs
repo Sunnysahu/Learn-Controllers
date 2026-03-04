@@ -133,6 +133,38 @@ namespace Learn_Controller.Controllers
             var stream = new FileStream(@"D:\source\repos\Learn Controller\wwwroot\My Resume Final.pdf", FileMode.Open, FileAccess.Read, FileShare.Read, bufferSize: 4096, FileOptions.Asynchronous | FileOptions.SequentialScan);
 
             return File(stream, MediaTypeNames.Application.Pdf, "Resume.pdf");
+
+            // FileMode -> tells the system what to do with the file when you open it.
+            // CreateNew : Creates a new file. If the file already exists, an IOException is thrown.
+            // Create : Creates a new file. If the file already exists, it is overwritten.
+            // Open : Opens an existing file. If the file does not exist, a FileNotFoundException is thrown.
+            // OpenOrCreate : Opens a file if it exists; otherwise, a new file is created.
+            // Append : Opens a file for writing at the end. Creates the file if it doesn’t exist.
+            // Truncate : Opens an existing file and truncates its size to zero bytes. If the file does not exist, a FileNotFoundException is thrown.
+
+            // FileAccess -> controls how you can use the file: read, write, or both.
+            // Read : Allows you to read from the file. You cannot write to the file.
+            // Write : Allows you to write to the file. You cannot read from the file.
+            // ReadWrite : Allows you to read from and write to the file.
+
+            // FileShare -> controls how other processes can access the file while it is open.
+            // None : No other process can access the file while it is open.
+            // Read : Other processes can read the file while it is open, but they cannot write to it.
+            // Write : Other processes can write to the file while it is open, but they cannot read from it.
+            // ReadWrite : Other processes can read from and write to the file while it is open.
+            // Delete : Other processes can delete the file while it is open, but they cannot read from or write to it.
+            // Inheritable : Other processes can inherit the file handle, allowing them to access the file while it is open.
+
+            // FileOptions -> provides additional options for how the file is accessed and used.
+            // None : Indicates that no special options are specified for file access. This is the default value if no options are provided.
+            // Asynchronous : Indicates that the file is being accessed asynchronously, allowing for non-blocking I/O operations.
+            // DeleteOnClose : Indicates that the file should be automatically deleted when it is closed.
+            // SequentialScan : Indicates that the file will be accessed sequentially, which can optimize performance for certain types of file access patterns.
+            // RandomAccess : Indicates that the file will be accessed randomly, which can optimize performance for certain types of file access patterns.
+            // Encrypted : Indicates that the file is encrypted and should be decrypted when accessed.
+            // WriteThrough : Indicates that the file should be written through to the underlying storage, bypassing any intermediate caching mechanisms. This can be useful for ensuring data integrity in certain scenarios, such as when writing critical data that must be immediately persisted to disk.
+
+
         }
     }
 }
