@@ -105,5 +105,15 @@ namespace Learn_Controller.Controllers
             return new PhysicalFileResult(@"D:\source\repos\Learn Controller\wwwroot\3rd Highest.txt", MediaTypeNames.Text.Plain);
         }
 
+        [HttpGet]
+        [Route("download-jpg-file")]
+        public FileResult DownloadJpgFile()
+        {
+            // FileContentResult is used to send a file to the browser and prompt the user to download it. It is used when you want the user to download the file instead of displaying it in the browser. 
+
+            return File("Profile.jpg", MediaTypeNames.Image.Jpeg, "NewProfilePhoto.jpg");
+        }
+
+
     }
 }
