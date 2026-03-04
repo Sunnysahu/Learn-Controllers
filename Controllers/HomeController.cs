@@ -125,14 +125,12 @@ namespace Learn_Controller.Controllers
         }
 
         [HttpGet]
-        [Route("FileStreamResultPdf")]
-        public FileResult StreamPdfFileUsingByte()
+        [Route("download-large-file-with-buffering")]
+        public FileResult DownloadLargeFileWithBuffering()
         {
-            // `FileStreamResult` is used to send a file to the browser and prompt the user to download it. It is used when you want the user to download the file instead of displaying it in the browser. `FileStreamResult` needs a stream that contains the file content.
+            var stream = new FileStream(@"D:\source\repos\Learn Controller\wwwroot\Users.docx", FileMode.Open, FileAccess.Read, FileShare.Read, bufferSize: 8192, FileOptions.Asynchronous | FileOptions.SequentialScan);
+            return File(stream, MediaTypeNames.Application.Octet, "UserWord.docx");
 
-            var stream = new FileStream(@"D:\source\repos\Learn Controller\wwwroot\My Resume Final.pdf", FileMode.Open, FileAccess.Read, FileShare.Read, bufferSize: 4096, FileOptions.Asynchronous | FileOptions.SequentialScan);
-
-            return File(stream, MediaTypeNames.Application.Pdf, "Resume.pdf");
 
             // FileMode -> tells the system what to do with the file when you open it.
             // CreateNew : Creates a new file. If the file already exists, an IOException is thrown.
