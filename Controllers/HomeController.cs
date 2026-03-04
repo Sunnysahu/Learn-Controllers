@@ -84,6 +84,26 @@ namespace Learn_Controller.Controllers
                 Email = "Sunny@gmail.com"
             };
             return Json(aboutme);
+            //return new JsonResult(aboutme);
         }
+
+        // Sending File
+        [HttpGet]
+        [Route("download-pdf-file")]
+        public FileResult DownloadVirtualPdfFile()
+        {
+            // VirtualFileResult is used to send a file directly to the browser and open it without downloading it. It is used when you want to display the file in the browser instead of prompting the user to download it.
+            return 
+                new VirtualFileResult("My Resume Final.pdf",MediaTypeNames.Application.Pdf); 
+        }
+
+        [HttpGet]
+        [Route("download-pdf-physical-file")]
+        public FileResult DownloadPhysicalTxtFile()
+        {
+            // PhysicalFileResult is used to send a file to the browser and prompt the user to download it. It is used when you want the user to download the file instead of displaying it in the browser. `PhysicalFileResult` needs the absolute file path on disk
+            return new PhysicalFileResult(@"D:\source\repos\Learn Controller\wwwroot\3rd Highest.txt", MediaTypeNames.Text.Plain);
+        }
+
     }
 }
