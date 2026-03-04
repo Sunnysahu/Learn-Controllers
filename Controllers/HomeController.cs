@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Learn_Controller.Models;
+using Microsoft.AspNetCore.Mvc;
 using System.Net.Mime;
 
 namespace Learn_Controller.Controllers
@@ -71,6 +72,18 @@ namespace Learn_Controller.Controllers
         public string SetName(string name)
         {
             return $"Named {name} saved in Database";
+        }
+
+        [Route("home/about")]
+        public JsonResult Abouts()
+        {
+            AboutMe aboutme = new AboutMe()
+            {
+                Id = Guid.NewGuid(),
+                Name = "Sunny",
+                Email = "Sunny@gmail.com"
+            };
+            return Json(aboutme);
         }
     }
 }
