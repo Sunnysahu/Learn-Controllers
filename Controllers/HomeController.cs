@@ -59,5 +59,18 @@ namespace Learn_Controller.Controllers
             return new JsonResult(data);
         }
 
+        [HttpGet]
+        [Route("getname")]
+        public string GetName()
+        {
+            return "Hi, My name is Sunny";
+        }
+
+        [HttpPost]
+        [Route("setname")]
+        public string SetName(string name)
+        {
+            return $"Named {name} saved in Database";
+        }
     }
 }
