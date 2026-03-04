@@ -113,7 +113,5 @@ namespace Learn_Controller.Controllers
 
             return File("Profile.jpg", MediaTypeNames.Image.Jpeg, "NewProfilePhoto.jpg");
         }
-
-
     }
 }
