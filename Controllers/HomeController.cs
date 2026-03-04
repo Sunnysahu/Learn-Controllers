@@ -113,5 +113,26 @@ namespace Learn_Controller.Controllers
 
             return File("Profile.jpg", MediaTypeNames.Image.Jpeg, "NewProfilePhoto.jpg");
         }
+
+        [HttpGet]
+        [Route("download-docx-file-without-saving")]
+        public FileResult DownloadDocxFileUsingByte()
+        {
+            // This method is used to send a file to the browser without saving it on the server. It is useful when you want to generate a file on the fly and send it to the user without saving it on the server. `FileContentResult` needs the file content as a byte array.
+
+            byte[] fileBytes = System.IO.File.ReadAllBytes(@"D:\source\repos\Learn Controller\wwwroot\Users.docx");
+            return File(fileBytes, MediaTypeNames.Application.Octet, "User.docx");
+        }
+
+        [HttpGet]
+        [Route("FileStreamResultPdf")]
+        public FileResult StreamPdfFileUsingByte()
+        {
+            // `FileStreamResult` is used to send a file to the browser and prompt the user to download it. It is used when you want the user to download the file instead of displaying it in the browser. `FileStreamResult` needs a stream that contains the file content.
+
+            var stream = new FileStream(@"D:\source\repos\Learn Controller\wwwroot\My Resume Final.pdf", FileMode.Open, FileAccess.Read, FileShare.Read, bufferSize: 4096, FileOptions.Asynchronous | FileOptions.SequentialScan);
+
+            return File(stream, MediaTypeNames.Application.Pdf, "Resume.pdf");
+        }
     }
 }
