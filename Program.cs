@@ -7,8 +7,8 @@ builder.Services.AddControllers(); // Register controllers as services automatic
 var app = builder.Build();
 app.MapControllers(); // Map controller routes used with builder.Services.AddControllers();
 
-//app.MapGet("/", () => "Hello World!");
+app.MapGet("/", () => "Hello World!");
 
 app.Run();
 
-// 23rd Feb --> 8791
+// 26rd Feb --> 1

@@ -23,6 +23,7 @@ namespace Learn_Controller.Controllers
         {
             return "Hello Sunny";
         }
+
         [Route("text-content")]
         public ContentResult TextContent()
         {
@@ -32,6 +33,7 @@ namespace Learn_Controller.Controllers
                 ContentType = "text/plain"
             };
         }
+
         [Route("html-content")]
         public ContentResult HtmlContent()
         {
@@ -93,8 +95,8 @@ namespace Learn_Controller.Controllers
         public FileResult DownloadVirtualPdfFile()
         {
             // VirtualFileResult is used to send a file directly to the browser and open it without downloading it. It is used when you want to display the file in the browser instead of prompting the user to download it.
-            return 
-                new VirtualFileResult("My Resume Final.pdf",MediaTypeNames.Application.Pdf); 
+            return
+                new VirtualFileResult("My Resume Final.pdf", MediaTypeNames.Application.Pdf);
         }
 
         [HttpGet]
@@ -109,7 +111,7 @@ namespace Learn_Controller.Controllers
         [Route("download-jpg-file")]
         public FileResult DownloadJpgFile()
         {
-            // FileContentResult is used to send a file to the browser and prompt the user to download it. It is used when you want the user to download the file instead of displaying it in the browser. 
+            // FileContentResult is used to send a file to the browser and prompt the user to download it. It is used when you want the user to download the file instead of displaying it in the browser.
 
             return File("Profile.jpg", MediaTypeNames.Image.Jpeg, "NewProfilePhoto.jpg");
         }
@@ -130,7 +132,6 @@ namespace Learn_Controller.Controllers
         {
             var stream = new FileStream(@"D:\source\repos\Learn Controller\wwwroot\Users.docx", FileMode.Open, FileAccess.Read, FileShare.Read, bufferSize: 8192, FileOptions.Asynchronous | FileOptions.SequentialScan);
             return File(stream, MediaTypeNames.Application.Octet, "UserWord.docx");
-
 
             // FileMode -> tells the system what to do with the file when you open it.
             // CreateNew : Creates a new file. If the file already exists, an IOException is thrown.
@@ -161,8 +162,6 @@ namespace Learn_Controller.Controllers
             // RandomAccess : Indicates that the file will be accessed randomly, which can optimize performance for certain types of file access patterns.
             // Encrypted : Indicates that the file is encrypted and should be decrypted when accessed.
             // WriteThrough : Indicates that the file should be written through to the underlying storage, bypassing any intermediate caching mechanisms. This can be useful for ensuring data integrity in certain scenarios, such as when writing critical data that must be immediately persisted to disk.
-
-
         }
 
         [HttpGet]
@@ -172,7 +171,8 @@ namespace Learn_Controller.Controllers
             return File("My Resume Final.pdf", MediaTypeNames.Application.Pdf, "Resume.pdf");
         }
 
-        static int i = 0;
+        private static int i = 0;
+
         [HttpGet]
         [Route("download-iaction-json-data")]
         public IActionResult IActionJsonData()
@@ -182,10 +182,39 @@ namespace Learn_Controller.Controllers
                 Id = Guid.NewGuid(),
                 Name = "Sunny",
                 Email = $"{++i} Sunny@gmail.com"
-
             };
             return Json(aboutMe);
         }
 
+        // Hit This -> https://localhost:7092/get-user/102
+        // FromRoute
+        [HttpGet]
+        [Route("get-user/{id}")]
+        public string GetUserById([FromRoute] int id)
+        {
+            return $"User with ID {id} retrieved successfully.";
+        }
+
+
+        // Hit This ->  https://localhost:7092/search-users/?name=Sunny Sahu&age=26
+        // FromQuery
+        [HttpGet]
+        [Route("search-users/{name?}/{age?}")]
+        public string SearchUsers([FromQuery] string name, [FromQuery] int age)
+        {
+            return $"Searching for users with Name: {name} and Age: {age}";
+        }
+
+
+        // Hit this -> https://localhost:7092/create-user/?name=Sunny Sahu&email=sunny@gmail.com
+        [HttpGet]
+        [Route("create-user")]
+        public string CreateUser([FromQuery] AboutMe user)
+        {
+            
+            return $"User {user.Name} with Email {user.Email} created successfully.";
+
+        }
+        // FromForm, FromHeader, FromServices
     }
 }
