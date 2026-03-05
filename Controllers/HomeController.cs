@@ -219,15 +219,18 @@ namespace Learn_Controller.Controllers
             return Content($"You Name is {name}");
         }
 
-        // Hit this -> https://localhost:7092/create-user/?name=Sunny Sahu&email=sunny@gmail.com
+        // Hit this -> https://localhost:7092/create-user/?name=Sunny-Sahu&email=sunny@gmail.com
         [HttpGet]
         [Route("create-user")]
         public string CreateUser([FromQuery] AboutMe user)
         {
-            
+            string age =  Request.Query["age"].ToString(); // This is how you can access the query parameter without using [FromQuery] attribute. You can also use Request.Form, Request.Headers, Request.Cookies, etc. to access the data from the request.
+
             return $"User {user.Name} with Email {user.Email} created successfully.";
 
         }
+
+
         // FromForm, FromHeader, FromServices
     }
 }
