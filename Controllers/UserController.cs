@@ -63,10 +63,16 @@ namespace Learn_Controller.Controllers
 
         [HttpPost]
         [Route("user/employee")]
-        // Hit This -> https://localhost:7092/user/employee?name=SunnySahu&Email=SunnySahu@gmail.com
+        // Hit This (Browser Only) -> https://localhost:7092/user/employee?name=SunnySahu&Email=SunnySahu@gmail.com
         public IActionResult RegisterEmployee([FromBody] Employee employee) 
         {
-            return Ok();
+            //return Ok($"The Employee Name is {employee.Name} and Employee Email is {employee.Email}");
+            return Ok(new
+            {
+                Message = "Employee Registered Successfully",
+                Name = employee.Name,
+                Email = employee.Email
+            });
         }
     }
 }
