@@ -227,9 +227,15 @@ namespace Learn_Controller.Controllers
             string age =  Request.Query["age"].ToString(); // This is how you can access the query parameter without using [FromQuery] attribute. You can also use Request.Form, Request.Headers, Request.Cookies, etc. to access the data from the request.
 
             return $"User {user.Name} with Email {user.Email} created successfully.";
-
         }
 
+        [HttpGet]
+        [Route("statuscode")]
+        public IActionResult StatusCode()
+        {
+            return StatusCode(404, "The resource you are looking for is not found.");
+
+        }
 
         // FromForm, FromHeader, FromServices
     }
