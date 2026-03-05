@@ -164,6 +164,8 @@ namespace Learn_Controller.Controllers
             // WriteThrough : Indicates that the file should be written through to the underlying storage, bypassing any intermediate caching mechanisms. This can be useful for ensuring data integrity in certain scenarios, such as when writing critical data that must be immediately persisted to disk.
         }
 
+
+
         [HttpGet]
         [Route("download-action-pdf-file")]
         public ActionResult ActionDownloadPdf()
@@ -205,6 +207,17 @@ namespace Learn_Controller.Controllers
             return $"Searching for users with Name: {name} and Age: {age}";
         }
 
+
+        // Without using FromQuery
+        [HttpGet]
+        [Route("withoutfromquery")]
+        public IActionResult WithoutFromQuery()
+        {
+            string name = Request.Query["name"].ToString();
+            if (string.IsNullOrEmpty(name)) name = "User Not Found...";
+
+            return Content($"You Name is {name}");
+        }
 
         // Hit this -> https://localhost:7092/create-user/?name=Sunny Sahu&email=sunny@gmail.com
         [HttpGet]
