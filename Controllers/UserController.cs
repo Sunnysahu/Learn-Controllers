@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http.HttpResults;
+﻿using Learn_Controller.Models;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
@@ -36,6 +37,7 @@ namespace Learn_Controller.Controllers
                     RedirectToAction("Index","Home")
                     RedirectToRoute("routeName")
                     LocalRedirect("/home")
+
             Client Error Responses
                 BadRequest()              → 400
                 BadRequest(object)
@@ -49,6 +51,22 @@ namespace Learn_Controller.Controllers
                 StatusCode(500)
                 Problem()
             */
+        }
+
+        // Read Header Value -> https://localhost:7092/user/get-header-value/?headerName=User-Agent
+        [Route("user/get-header-value")]
+        public IActionResult GetHeaderValue(string headerName)
+        {
+            var userAgent = HttpContext.Request.Headers["user-agent"].ToString();
+            return Content($"<h1>{userAgent}</h1>", "text/html");
+        }
+
+        [HttpPost]
+        [Route("user/employee")]
+        // Hit This -> https://localhost:7092/user/employee?name=SunnySahu&Email=SunnySahu@gmail.com
+        public IActionResult RegisterEmployee([FromBody] Employee employee) 
+        {
+            return Ok();
         }
     }
 }
