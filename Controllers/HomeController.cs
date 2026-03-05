@@ -233,8 +233,8 @@ namespace Learn_Controller.Controllers
         [Route("statuscode")]
         public IActionResult StatusCode()
         {
+            // Read From Here -> https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status
             return StatusCode(404, "The resource you are looking for is not found.");
-
         }
 
         // FromForm, FromHeader, FromServices
