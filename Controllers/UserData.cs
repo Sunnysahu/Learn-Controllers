@@ -4,11 +4,11 @@ namespace Learn_Controller.Controllers
 {
     public class UserData
     {
-        [Required(ErrorMessage = "Name is required")]
+        [Required(ErrorMessage = "{0} is required")]
         [StringLength(50, MinimumLength = 2, ErrorMessage = "Name must be between 2 and 50 characters")]
         public required string Name { get; set; }
 
-        [Required(ErrorMessage = "Email is required")]
+        [Required(ErrorMessage = "{0} is required")]
         [EmailAddress(ErrorMessage = "Invalid email format")]
 
         public required string Email { get; set; }
