@@ -8,6 +8,7 @@ using System.Data.Common;
 using System.Diagnostics.Metrics;
 using System.Linq.Expressions;
 using System.Net.NetworkInformation;
+using System.Net.Security;
 using System.Numerics;
 using System.Xml;
 using System.Xml.Linq;
@@ -90,10 +91,12 @@ namespace Learn_Controller.Controllers
         [Route("validate-email")]
         public IActionResult ValidateEmail([FromBody] UserData userdata)
         {
+            int ErrorCount = ModelState.ErrorCount;
             if (ModelState.IsValid)
             {
                 return Ok(new
                 {
+                    ErrorCount = ErrorCount,
                     Message = "Validation Successful",
                     Name = userdata.Name,
                     Email = userdata.Email,
@@ -102,80 +105,97 @@ namespace Learn_Controller.Controllers
                 });
             }
 
+            // Better Way
+
+            //return BadRequest(ModelState.SelectMany(
+            //    entry => entry.Value.Errors.SelectMany(error => new Dictionary<string, string>
+            //    {
+            //        {entry.Key.ToLower(), error.ErrorMessage }
+            //    })));
+
+            // Best Way
+
+            //return BadRequest(
+            //    ModelState
+            //        .Where(x => x.Value != null && x.Value.Errors.Count > 0)
+            //        .ToDictionary(
+            //            x => x.Key.ToLower(),
+            //            x => x.Value!.Errors.First().ErrorMessage
+            //        )
+            //);
             return BadRequest(
                 ModelState.Values
                     .SelectMany(error => error.Errors)
                     .Select(error => error.ErrorMessage));
 
-            
 
 
-             //More Data Annotations for Validation
-             //[Required(ErrorMessage = "Field is required")] - Ensures a value is provided.
+            //More Data Annotations for Validation
+            //[Required(ErrorMessage = "Field is required")] - Ensures a value is provided.
 
-             //[EmailAddress(ErrorMessage = "Invalid email")] - Validates that the value is a valid email format.
+            //[EmailAddress(ErrorMessage = "Invalid email")] - Validates that the value is a valid email format.
 
-             //[Range(1, 100, ErrorMessage = "Value must be between 1 and 100")] - Validates that a numeric value falls within a specified range.
+            //[Range(1, 100, ErrorMessage = "Value must be between 1 and 100")] - Validates that a numeric value falls within a specified range.
 
-             //[StringLength(50, MinimumLength = 5, ErrorMessage = "Length must be 5–50 characters")] - Validates string length with optional minimum and maximum limits.
+            //[StringLength(50, MinimumLength = 5, ErrorMessage = "Length must be 5–50 characters")] - Validates string length with optional minimum and maximum limits.
 
-             //[MaxLength(50, ErrorMessage = "Maximum 50 characters allowed")] - Ensures the value does not exceed the specified maximum length.
+            //[MaxLength(50, ErrorMessage = "Maximum 50 characters allowed")] - Ensures the value does not exceed the specified maximum length.
 
-             //[MinLength(5, ErrorMessage = "Minimum 5 characters required")] - Ensures the value meets the specified minimum length.
+            //[MinLength(5, ErrorMessage = "Minimum 5 characters required")] - Ensures the value meets the specified minimum length.
 
-             //[RegularExpression(@"^[a-zA-Z0-9]+$", ErrorMessage = "Only letters and numbers allowed")] - Validates the value using a regular expression pattern.
+            //[RegularExpression(@"^[a-zA-Z0-9]+$", ErrorMessage = "Only letters and numbers allowed")] - Validates the value using a regular expression pattern.
 
-             //[Compare("Password", ErrorMessage = "Passwords do not match")] - Ensures two properties have the same value.
+            //[Compare("Password", ErrorMessage = "Passwords do not match")] - Ensures two properties have the same value.
 
-             //[DataType(DataType.Date, ErrorMessage = "Invalid date")] - Specifies the expected data type for formatting and UI purposes.
+            //[DataType(DataType.Date, ErrorMessage = "Invalid date")] - Specifies the expected data type for formatting and UI purposes.
 
-             //[CreditCard(ErrorMessage = "Invalid credit card number")] - Validates that the value is in a valid credit card format.
+            //[CreditCard(ErrorMessage = "Invalid credit card number")] - Validates that the value is in a valid credit card format.
 
-             //[Phone(ErrorMessage = "Invalid phone number")] - Validates that the value is a valid phone number format.
+            //[Phone(ErrorMessage = "Invalid phone number")] - Validates that the value is a valid phone number format.
 
-             //[Url(ErrorMessage = "Invalid URL")] - Validates that the value is a valid URL.
+            //[Url(ErrorMessage = "Invalid URL")] - Validates that the value is a valid URL.
 
-             //[FileExtensions(Extensions = "jpg,png", ErrorMessage = "Only jpg and png allowed")] - Restricts file uploads to specified extensions.
+            //[FileExtensions(Extensions = "jpg,png", ErrorMessage = "Only jpg and png allowed")] - Restricts file uploads to specified extensions.
 
-             //[Display(Name = "Employee Name")] - Specifies a friendly display name for UI labels.
+            //[Display(Name = "Employee Name")] - Specifies a friendly display name for UI labels.
 
-             //[Key] - Marks the property as the primary key in Entity Framework.
+            //[Key] - Marks the property as the primary key in Entity Framework.
 
-             //[ForeignKey("Department")] - Specifies the foreign key relationship with another entity.
+            //[ForeignKey("Department")] - Specifies the foreign key relationship with another entity.
 
-             //[NotMapped] - Excludes the property from being mapped to a database column.[Required(ErrorMessage = "Field is required")] - Ensures a value is provided.
+            //[NotMapped] - Excludes the property from being mapped to a database column.[Required(ErrorMessage = "Field is required")] - Ensures a value is provided.
 
-             //[EmailAddress(ErrorMessage = "Invalid email")] - Validates that the value is a valid email format.
+            //[EmailAddress(ErrorMessage = "Invalid email")] - Validates that the value is a valid email format.
 
-             //[Range(1, 100, ErrorMessage = "Value must be between 1 and 100")] - Validates that a numeric value falls within a specified range.
+            //[Range(1, 100, ErrorMessage = "Value must be between 1 and 100")] - Validates that a numeric value falls within a specified range.
 
-             //[StringLength(50, MinimumLength = 5, ErrorMessage = "Length must be 5–50 characters")] - Validates string length with optional minimum and maximum limits.
+            //[StringLength(50, MinimumLength = 5, ErrorMessage = "Length must be 5–50 characters")] - Validates string length with optional minimum and maximum limits.
 
-             //[MaxLength(50, ErrorMessage = "Maximum 50 characters allowed")] - Ensures the value does not exceed the specified maximum length.
+            //[MaxLength(50, ErrorMessage = "Maximum 50 characters allowed")] - Ensures the value does not exceed the specified maximum length.
 
-             //[MinLength(5, ErrorMessage = "Minimum 5 characters required")] - Ensures the value meets the specified minimum length.
+            //[MinLength(5, ErrorMessage = "Minimum 5 characters required")] - Ensures the value meets the specified minimum length.
 
-             //[RegularExpression(@"^[a-zA-Z0-9]+$", ErrorMessage = "Only letters and numbers allowed")] - Validates the value using a regular expression pattern.
+            //[RegularExpression(@"^[a-zA-Z0-9]+$", ErrorMessage = "Only letters and numbers allowed")] - Validates the value using a regular expression pattern.
 
-             //[Compare("Password", ErrorMessage = "Passwords do not match")] - Ensures two properties have the same value.
+            //[Compare("Password", ErrorMessage = "Passwords do not match")] - Ensures two properties have the same value.
 
-             //[DataType(DataType.Date, ErrorMessage = "Invalid date")] - Specifies the expected data type for formatting and UI purposes.
+            //[DataType(DataType.Date, ErrorMessage = "Invalid date")] - Specifies the expected data type for formatting and UI purposes.
 
-             //[CreditCard(ErrorMessage = "Invalid credit card number")] - Validates that the value is in a valid credit card format.
+            //[CreditCard(ErrorMessage = "Invalid credit card number")] - Validates that the value is in a valid credit card format.
 
-             //[Phone(ErrorMessage = "Invalid phone number")] - Validates that the value is a valid phone number format.
+            //[Phone(ErrorMessage = "Invalid phone number")] - Validates that the value is a valid phone number format.
 
-             //[Url(ErrorMessage = "Invalid URL")] - Validates that the value is a valid URL.
+            //[Url(ErrorMessage = "Invalid URL")] - Validates that the value is a valid URL.
 
-             //[FileExtensions(Extensions = "jpg,png", ErrorMessage = "Only jpg and png allowed")] - Restricts file uploads to specified extensions.
+            //[FileExtensions(Extensions = "jpg,png", ErrorMessage = "Only jpg and png allowed")] - Restricts file uploads to specified extensions.
 
-             //[Display(Name = "Employee Name")] - Specifies a friendly display name for UI labels.
+            //[Display(Name = "Employee Name")] - Specifies a friendly display name for UI labels.
 
-             //[Key] - Marks the property as the primary key in Entity Framework.
+            //[Key] - Marks the property as the primary key in Entity Framework.
 
-             //[ForeignKey("Department")] - Specifies the foreign key relationship with another entity.
+            //[ForeignKey("Department")] - Specifies the foreign key relationship with another entity.
 
-             //[NotMapped] - Excludes the property from being mapped to a database column.
+            //[NotMapped] - Excludes the property from being mapped to a database column.
         }
     }
 }
