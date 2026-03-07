@@ -107,11 +107,11 @@ namespace Learn_Controller.Controllers
 
             // Better Way
 
-            //return BadRequest(ModelState.SelectMany(
-            //    entry => entry.Value.Errors.SelectMany(error => new Dictionary<string, string>
-            //    {
-            //        {entry.Key.ToLower(), error.ErrorMessage }
-            //    })));
+            return BadRequest(ModelState.SelectMany(
+                entry => entry.Value.Errors.SelectMany(error => new Dictionary<string, string>
+                {
+                    {entry.Key.ToLower(), error.ErrorMessage }
+                })));
 
             // Best Way
 
@@ -123,10 +123,11 @@ namespace Learn_Controller.Controllers
             //            x => x.Value!.Errors.First().ErrorMessage
             //        )
             //);
-            return BadRequest(
-                ModelState.Values
-                    .SelectMany(error => error.Errors)
-                    .Select(error => error.ErrorMessage));
+            //return BadRequest(
+            //    ModelState.Values
+            //        .SelectMany(error => error.Errors)
+            //        .Select(error => error.ErrorMessage)
+            //);
 
 
 

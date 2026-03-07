@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Learn_Controller.Models.CustomModelValidation;
+using System.ComponentModel.DataAnnotations;
 
 namespace Learn_Controller.Controllers
 {
@@ -18,5 +19,12 @@ namespace Learn_Controller.Controllers
 
         [Range(100000, 999999, ErrorMessage = "Pincode must be a 6-digit number")]
         public int Pincode { get; set; }
+
+        // Custom Validation Example - Create a custom validation attribute to validate that the name does not contain any digits.
+        // Create a Folder inside Models and create a folder and then create a class MinimumAgeAttribute.cs and then add the code. Inherit from `ValidationAttribute` and override the IsValid method to implement the custom validation logic. Then use this custom validation attribute on the DateOfBirth property in the UserData model. Finally, hit the API with a date of birth that does not meet the minimum age requirement to see the validation in action.
+
+        [Required]
+        [MinimumAge(18)]
+        public DateTime DateOfBirth { get; set; }
     }
 }
