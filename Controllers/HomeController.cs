@@ -164,8 +164,6 @@ namespace Learn_Controller.Controllers
             // WriteThrough : Indicates that the file should be written through to the underlying storage, bypassing any intermediate caching mechanisms. This can be useful for ensuring data integrity in certain scenarios, such as when writing critical data that must be immediately persisted to disk.
         }
 
-
-
         [HttpGet]
         [Route("download-action-pdf-file")]
         public ActionResult ActionDownloadPdf()
