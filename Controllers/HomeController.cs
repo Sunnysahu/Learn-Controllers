@@ -195,7 +195,6 @@ namespace Learn_Controller.Controllers
             return $"User with ID {id} retrieved successfully.";
         }
 
-
         // Hit This ->  https://localhost:7092/search-users/?name=Sunny Sahu&age=26
         // FromQuery
         [HttpGet]
@@ -204,7 +203,6 @@ namespace Learn_Controller.Controllers
         {
             return $"Searching for users with Name: {name} and Age: {age}";
         }
-
 
         // Without using FromQuery
         [HttpGet]
@@ -222,7 +220,7 @@ namespace Learn_Controller.Controllers
         [Route("create-user")]
         public string CreateUser([FromQuery] AboutMe user)
         {
-            string age =  Request.Query["age"].ToString(); // This is how you can access the query parameter without using [FromQuery] attribute. You can also use Request.Form, Request.Headers, Request.Cookies, etc. to access the data from the request.
+            string age = Request.Query["age"].ToString(); // This is how you can access the query parameter without using [FromQuery] attribute. You can also use Request.Form, Request.Headers, Request.Cookies, etc. to access the data from the request.
 
             return $"User {user.Name} with Email {user.Email} created successfully.";
         }
@@ -235,6 +233,52 @@ namespace Learn_Controller.Controllers
             return StatusCode(404, "The resource you are looking for is not found.");
         }
 
-        // FromForm, FromHeader, FromServices
+        // FromForm --> FormFrom is used to bind data from an HTML form submission to a model or action parameters. It is typically used in POST requests where the form data is sent in the request body. When you use [FromForm], the model binder will look for form data in the request body and bind it to the specified parameters or model properties. HTML forms -- File upload -- Postman form-data
+
+        [HttpPost]
+        [Route("submit-form")]
+        public IActionResult ValidateForm([FromForm] UserData userdata)
+        {
+            return Ok(new
+            {
+                Name = userdata.Name,
+                Email = userdata.Email,
+                Age = userdata.Age
+            });
+        }
+
+        // File Upload + Data from Form
+
+        [HttpPost]
+        [Route("upload-user")]
+        public IActionResult UploadUser([FromForm] string name, [FromForm] string email, [FromForm] int age, [FromForm] IFormFile file)
+        {
+            if (file == null)
+                return BadRequest("File missing");
+
+            var allowed = new[] { ".pdf", ".txt" };
+
+            var ext = Path.GetExtension(file.FileName).ToLower();
+
+            if (!allowed.Contains(ext))
+            {
+                return BadRequest("Only PDF and TXT allowed");
+            }
+            return Ok(new
+            {
+                Name = name,
+                Email = email,
+                Age = age,
+                FileName = file.FileName,
+                Size = file.Length,
+                files = file
+            });
+        }
+
+        //FromHeader
+
+        //[HttpGet]
+
+        //FromServices
     }
 }

@@ -16,7 +16,7 @@ namespace Learn_Controller.Models.CustomModelValidation
 
             if (!string.IsNullOrEmpty(str))
             {
-                bool status = Regex.IsMatch(str, @"^[a-zA-Z]+$")
+                bool status = Regex.IsMatch(str, @"^[a-zA-Z]+$");
                     if (!status)
                     {
                         return new ValidationResult("Name should not contain special characters or digits");

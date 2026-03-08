@@ -105,14 +105,6 @@ namespace Learn_Controller.Controllers
                 });
             }
 
-            // Better Way
-
-            return BadRequest(ModelState.SelectMany(
-                entry => entry.Value.Errors.SelectMany(error => new Dictionary<string, string>
-                {
-                    {entry.Key.ToLower(), error.ErrorMessage }
-                })));
-
             // Best Way
 
             //return BadRequest(
@@ -129,7 +121,13 @@ namespace Learn_Controller.Controllers
             //        .Select(error => error.ErrorMessage)
             //);
 
+            // Better Way
 
+            return BadRequest(ModelState.SelectMany(
+                entry => entry.Value.Errors.SelectMany(error => new Dictionary<string, string>
+                {
+                    {entry.Key.ToLower(), error.ErrorMessage }
+                })));
 
             //More Data Annotations for Validation
             //[Required(ErrorMessage = "Field is required")] - Ensures a value is provided.
@@ -198,5 +196,8 @@ namespace Learn_Controller.Controllers
 
             //[NotMapped] - Excludes the property from being mapped to a database column.
         }
+
+        
+
     }
 }
