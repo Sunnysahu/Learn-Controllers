@@ -251,10 +251,15 @@ namespace Learn_Controller.Controllers
 
         [HttpPost]
         [Route("upload-user")]
+        [RequestSizeLimit(10 * 1024 * 1024)]
         public IActionResult UploadUser([FromForm] string name, [FromForm] string email, [FromForm] int age, [FromForm] IFormFile file)
         {
             if (file == null)
                 return BadRequest("File missing");
+
+            long maxSize = 5 * 1024 * 1024;
+            if (file.Length > maxSize)
+                return BadRequest("File too large");
 
             var allowed = new[] { ".pdf", ".txt" };
 
