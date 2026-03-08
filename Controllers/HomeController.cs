@@ -1,4 +1,5 @@
 ﻿using Learn_Controller.Models;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
 using System.Net.Mime;
 
@@ -251,33 +252,69 @@ namespace Learn_Controller.Controllers
 
         [HttpPost]
         [Route("upload-user")]
-        [RequestSizeLimit(10 * 1024 * 1024)]
+        //[RequestSizeLimit(10 * 1024 * 1024)] // If using here then file will not recieve here
         public IActionResult UploadUser([FromForm] string name, [FromForm] string email, [FromForm] int age, [FromForm] IFormFile file)
         {
             if (file == null)
                 return BadRequest("File missing");
 
+
             long maxSize = 5 * 1024 * 1024;
             if (file.Length > maxSize)
                 return BadRequest("File too large");
 
-            var allowed = new[] { ".pdf", ".txt" };
+            //var allowed = new[] { ".pdf", ".txt" };
 
-            var ext = Path.GetExtension(file.FileName).ToLower();
+            //var ext = Path.GetExtension(file.FileName).ToLower();
 
-            if (!allowed.Contains(ext))
-            {
-                return BadRequest("Only PDF and TXT allowed");
-            }
+            //if (!allowed.Contains(ext))
+            //{
+            //    return BadRequest("Only PDF and TXT allowed");
+            //}
             return Ok(new
             {
                 Name = name,
                 Email = email,
                 Age = age,
                 FileName = file.FileName,
-                Size = file.Length,
+                Size = file.Length / 1024 / 1024,
                 files = file
             });
+
+            /*
+            Global limit (Entire API) --> Every End Point will Have 10 MB limit for File Upload, If you want to change the limit for a specific end point then you can use [RequestSizeLimit] attribute on that end point and set the limit in bytes. Add this in Program.cs File
+
+            builder.Services.Configure<FormOptions>(options =>
+            {
+                options.MultipartBodyLengthLimit = 10 * 1024 * 1024; // 10MB
+            });
+
+            -- Kestrel server limit --> Kestrel is the default web server used by ASP.NET Core applications. It has its own limits for request body size, which can be configured in the Program.cs file. You can set the limit for Kestrel using the `KestrelServerOptions` class. For example, to set a global limit of 10 MB for Kestrel, you can add the following code in Program.cs:
+
+            builder.WebHost.ConfigureKestrel(serverOptions =>
+            {
+                serverOptions.Limits.MaxRequestBodySize = 10 * 1024 * 1024;
+            });
+
+            -- Use ot in Middleware
+
+            app.Use(async (context, next) =>
+            {
+                try
+                {
+                    await next();
+                }
+                catch (BadHttpRequestException ex)
+                {
+                    if (ex.Message.Contains("Request body too large"))
+                    {
+                        context.Response.StatusCode = 413;
+                        await context.Response.WriteAsync("File too large");
+                    }
+                }
+            });
+
+            */
         }
 
         //FromHeader
